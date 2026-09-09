@@ -17,6 +17,8 @@ This project builds a **systematic data quality layer** using PyDeequ — the sa
 - Profiles every column for completeness, distribution, and type anomalies
 - Tracks key metrics over time and flags drift between monthly loads
 - Generates a human-readable quality report on every run
+- Traces correlated failures back to a single upstream feed
+- Cleans the data and re-runs the identical suite to prove the fix
 
 ---
 
@@ -65,6 +67,9 @@ filter that ignores NULLs would report this as a 0.50% issue and miss it
 entirely; Deequ's `satisfies()` treats a NULL predicate as a violation and
 surfaces the real 24.39%.
 
+That turned out to be the thread worth pulling — see
+[Root cause](#root-cause-four-of-those-six-issues-are-one-upstream-feed) below.
+
 ### Drift Detected Across 3 Months
 
 | Metric | Sep 2025 | Nov 2025 | Change |
@@ -86,6 +91,108 @@ would have shown it.
 
 ---
 
+### Root cause: four of those six issues are one upstream feed
+
+Deequ reports *what* fails. It does not say whether the failures are
+independent — and here they are not.
+
+Five columns are NULL in **exactly the same 3,072,822 rows**. Not correlated:
+identical. They are never missing individually.
+
+| Column | NULL rows |
+|---|---|
+| `passenger_count` | 3,072,822 |
+| `congestion_surcharge` | 3,072,822 |
+| `RatecodeID` | 3,072,822 |
+| `store_and_fwd_flag` | 3,072,822 |
+| `Airport_fee` | 3,072,822 |
+
+Those same rows also carry `payment_type = 0` — a value the TLC data dictionary
+does not define (it specifies 1–6). That makes `payment_type = 0` a usable
+signature for the feed.
+
+Attributing each quality issue back to it:
+
+| Issue | Total | From this feed | Share |
+|---|---|---|---|
+| Negative fare amount | 969,118 | 774,879 | **80.0%** |
+| Zero or negative fare | 975,362 | 776,669 | **79.6%** |
+| Zero trip distance | 359,502 | 229,981 | **64.0%** |
+| Invalid passenger count | 3,137,285 | 3,072,822 | **97.9%** |
+| Dropoff before pickup | 187,267 | 591 | 0.3% |
+| Negative tip amount | 296 | 1 | 0.3% |
+
+So this is not six defects to trace separately. It is **one upstream feed
+producing roughly a quarter of all records with a block of fields unset**, plus
+two genuinely independent problems (timestamp ordering and negative tips) that
+need their own fix. That distinction is the difference between six tickets and
+one.
+
+---
+
+## 🧹 Cleaning and Revalidation
+
+Detect → quantify → **clean → revalidate**. Which rows to drop is a judgement
+call, so the notebook compares two strategies rather than assuming one.
+
+| Strategy | Rows kept | Share |
+|---|---|---|
+| **Strict** — enforce all 12 constraints | 9,230,244 | 71.77% |
+| **Lenient** — trip validity only, keep NULL `passenger_count` | 11,426,085 | 88.84% |
+
+Strict discards **2,195,841 additional rows whose only fault is a missing
+`passenger_count`** — a field that says nothing about whether the trip itself
+happened. Those rows have a real fare, distance and timestamps. Dropping ~17% of
+the dataset to satisfy a constraint about passenger headcount would destroy
+usable revenue data to make a dashboard look clean.
+
+The pipeline therefore keeps them, re-runs the **identical** `VerificationSuite`
+against the cleaned frame, and prints before/after compliance per constraint.
+`passenger_count` is expected to still fail — that is the honest result. Cleaning
+fixed the trip-level defects; the missing-field problem belongs upstream, not in
+a filter.
+
+---
+
+## 🚦 Congestion Pricing (2025)
+
+NYC began charging for entry to the Manhattan CBD in 2025, and the charge appears
+in the trip record as its own `cbd_congestion_fee` column.
+
+| | |
+|---|---|
+| Trips charged | 9,303,740 (72.34%), flat $0.75 |
+| Collected over three months | **$6,977,837** |
+| Trips refunded (fee < 0) | 129,908 (1.01%) |
+
+It is distinct from the older `congestion_surcharge` ($2.50, applied to 67.26% of
+trips) — a trip can carry both, and conflating them double-counts.
+
+Comparing trips that pay it against trips that do not, **on the cleaned data**:
+
+| Metric | Pays CBD fee | Does not |
+|---|---|---|
+| Trips | 8,390,450 | 3,035,635 |
+| Mean fare | $19.62 | $22.20 |
+| Mean distance | 5.36 mi | 8.70 mi |
+| Mean tip | $3.30 | $2.78 |
+| Median fare per mile | **$7.53** | $6.83 |
+
+Congestion-zone trips are **shorter but cost more per mile**, which is what a
+cordon charge is designed to produce. They also tip better, so the higher
+per-mile cost is not suppressing gratuities.
+
+Demand peaks at **18:00** (764,176 pickups) and bottoms out at **04:00** (83,572)
+— a 9.1× swing across the day.
+
+> The refunded rows matter for the quality story too: 99.3% of trips with a
+> negative congestion fee also carry a negative fare. They are voided and
+> disputed trips, not corruption — which is why the cleaning layer removes them
+> rather than treating them as a data bug to escalate.
+
+
+---
+
 ## 🏗️ Architecture
 
 ```
@@ -103,6 +210,9 @@ NYC TLC Public Data (monthly .parquet files)
     │  3. Metrics Store             │  ──► Persisted JSON per month
     │  4. Anomaly Detection         │  ──► Drift charts across months
     │  5. Quality Report            │  ──► Consolidated summary
+    │  6. Root Cause Analysis       │  ──► Co-missingness / feed attribution
+    │  7. Clean + Revalidate        │  ──► Before/after compliance
+    │  8. Congestion Pricing EDA    │  ──► 2025 cbd_congestion_fee analysis
     └───────────────────────────────┘
 ```
 
