@@ -141,15 +141,37 @@ Deequ-Practice/
 
 The first two cells install Java and Spark, so the first run takes a few minutes.
 
+### Environment compatibility (read this first)
+
+PyDeequ sits on top of a JVM library, so four versions are coupled. Getting any
+one wrong surfaces as `JAVA_GATEWAY_EXITED` or `JavaPackage object is not
+callable` — neither of which names the real cause.
+
+| Component | Constraint | Why |
+|---|---|---|
+| **PyDeequ** | `SPARK_VERSION=3.5` only | `pydeequ/configs.py` raises on any other value |
+| **Deequ JAR** | `2.0.21-spark-3.5` | Scala 2.12 build, selected by PyDeequ |
+| **Spark** | **3.5.x** | Spark 4.x is Scala 2.13 and cannot load the 2.12 JAR |
+| **Java** | 8, 11 or 17 | Spark 4 dropped Java 8; Spark 3.5 supports all three |
+| **Python** | 3.8–3.11 | PySpark 3.5.x does not declare 3.12/3.13 support |
+
+The common failure is pairing **Java 8 with PySpark 4.0.0**: Spark 4 requires
+Java 17+, so the JVM exits before Py4J can read its port. Raising Java alone
+does not fix it either — Spark 4 is Scala 2.13, so the Deequ JAR still will not
+load. Pin Spark to 3.5.
+
+> **Colab note:** Colab's runtime is currently Python 3.13, which is ahead of
+> what PySpark 3.5 declares. This pipeline does all of its work in the JVM — no
+> Python UDFs — so it generally runs anyway, and the preflight cell reports the
+> mismatch explicitly instead of failing obscurely. If you do hit a Python
+> serialization error, use an environment with Python 3.11.
+
 ### Option 2 — Local Spark
 
-PyDeequ binds to the Deequ JVM library, so **Java 8 is required** — Deequ
-`2.0.4-spark-3.5` is built for Scala 2.12 and will not load on newer runtimes.
-
 ```bash
-# Prerequisites: Java 8, Python 3.9+
-pip install "pyspark[connect]==4.0.0" pydeequ
-export SPARK_VERSION=3.5   # tells PyDeequ which Deequ build to bind to
+# Prerequisites: Java 11 (8 or 17 also work), Python 3.8–3.11
+pip install "pyspark==3.5.9" pydeequ
+export SPARK_VERSION=3.5   # PyDeequ reads this to pick its Deequ JAR
 
 # Download data into the repo root
 wget https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2025-09.parquet -O sep_2025.parquet
@@ -185,8 +207,8 @@ A full run writes:
 | Tool | Purpose |
 |---|---|
 | [PyDeequ](https://github.com/awslabs/python-deequ) | Data quality checks, profiling, metrics store |
-| PySpark 4.0.0 | Distributed DataFrame processing |
-| Amazon Deequ 2.0.4-spark-3.5 (JVM) | Underlying Scala engine (needs Java 8 / Scala 2.12) |
+| PySpark 3.5.9 | Distributed DataFrame processing |
+| Amazon Deequ 2.0.21-spark-3.5 (JVM) | Underlying Scala 2.12 engine behind PyDeequ |
 | Matplotlib | Drift visualization charts |
 | NYC TLC Open Data | Source dataset (~3–4M rows/month) |
 
