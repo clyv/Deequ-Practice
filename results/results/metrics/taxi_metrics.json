@@ -1,0 +1,1166 @@
+[
+  {
+    "resultKey": {
+      "dataSetDate": 1788946035265,
+      "tags": {
+        "month": "2025-09",
+        "dataset": "nyc_yellow_taxi"
+      }
+    },
+    "analyzerContext": {
+      "metricMap": [
+        {
+          "analyzer": {
+            "analyzerName": "Completeness",
+            "column": "passenger_count"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "passenger_count",
+            "name": "Completeness",
+            "value": 0.7489552495109991
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "trip_distance"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "trip_distance",
+            "name": "Mean",
+            "value": 6.839377661570394
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Maximum",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Maximum",
+            "value": 323800.27
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Minimum",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Minimum",
+            "value": -998.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Completeness",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Completeness",
+            "value": 1.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Size"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Dataset",
+            "instance": "*",
+            "name": "Size",
+            "value": 4251015.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "CountDistinct",
+            "columns": [
+              "PULocationID"
+            ]
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "PULocationID",
+            "name": "CountDistinct",
+            "value": 259.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "passenger_count"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "passenger_count",
+            "name": "Mean",
+            "value": 1.2642313321733012
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Mean",
+            "value": 19.204001681949958
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "StandardDeviation",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "StandardDeviation",
+            "value": 158.28370563126782
+          }
+        }
+      ]
+    }
+  },
+  {
+    "resultKey": {
+      "dataSetDate": 1788946039820,
+      "tags": {
+        "month": "2025-10",
+        "dataset": "nyc_yellow_taxi"
+      }
+    },
+    "analyzerContext": {
+      "metricMap": [
+        {
+          "analyzer": {
+            "analyzerName": "Completeness",
+            "column": "passenger_count"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "passenger_count",
+            "name": "Completeness",
+            "value": 0.7762577678004308
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "trip_distance"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "trip_distance",
+            "name": "Mean",
+            "value": 6.6967439196033824
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Maximum",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Maximum",
+            "value": 1071.9
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Minimum",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Minimum",
+            "value": -800.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Completeness",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Completeness",
+            "value": 1.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Size"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Dataset",
+            "instance": "*",
+            "name": "Size",
+            "value": 4428699.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "CountDistinct",
+            "columns": [
+              "PULocationID"
+            ]
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "PULocationID",
+            "name": "CountDistinct",
+            "value": 262.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "passenger_count"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "passenger_count",
+            "name": "Mean",
+            "value": 1.2748128751659487
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Mean",
+            "value": 18.255545755085404
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "StandardDeviation",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "StandardDeviation",
+            "value": 19.68845947191748
+          }
+        }
+      ]
+    }
+  },
+  {
+    "resultKey": {
+      "dataSetDate": 1788946042501,
+      "tags": {
+        "month": "2025-11",
+        "dataset": "nyc_yellow_taxi"
+      }
+    },
+    "analyzerContext": {
+      "metricMap": [
+        {
+          "analyzer": {
+            "analyzerName": "Completeness",
+            "column": "passenger_count"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "passenger_count",
+            "name": "Completeness",
+            "value": 0.7573230682988938
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "trip_distance"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "trip_distance",
+            "name": "Mean",
+            "value": 6.530913863727199
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Maximum",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Maximum",
+            "value": 1508.7
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Minimum",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Minimum",
+            "value": -1508.7
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Completeness",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Completeness",
+            "value": 1.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Size"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Dataset",
+            "instance": "*",
+            "name": "Size",
+            "value": 4181444.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "CountDistinct",
+            "columns": [
+              "PULocationID"
+            ]
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "PULocationID",
+            "name": "CountDistinct",
+            "value": 260.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "passenger_count"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "passenger_count",
+            "name": "Mean",
+            "value": 1.2871010362825197
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Mean",
+            "value": 17.1179270295109
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "StandardDeviation",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "StandardDeviation",
+            "value": 19.579276515982514
+          }
+        }
+      ]
+    }
+  },
+  {
+    "resultKey": {
+      "dataSetDate": 1788946992243,
+      "tags": {
+        "month": "2025-09",
+        "dataset": "nyc_yellow_taxi"
+      }
+    },
+    "analyzerContext": {
+      "metricMap": [
+        {
+          "analyzer": {
+            "analyzerName": "Completeness",
+            "column": "passenger_count"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "passenger_count",
+            "name": "Completeness",
+            "value": 0.7489552495109991
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "trip_distance"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "trip_distance",
+            "name": "Mean",
+            "value": 6.839377661570394
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Maximum",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Maximum",
+            "value": 323800.27
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Minimum",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Minimum",
+            "value": -998.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Completeness",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Completeness",
+            "value": 1.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Size"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Dataset",
+            "instance": "*",
+            "name": "Size",
+            "value": 4251015.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "CountDistinct",
+            "columns": [
+              "PULocationID"
+            ]
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "PULocationID",
+            "name": "CountDistinct",
+            "value": 259.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "passenger_count"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "passenger_count",
+            "name": "Mean",
+            "value": 1.2642313321733012
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Mean",
+            "value": 19.204001681949958
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "StandardDeviation",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "StandardDeviation",
+            "value": 158.28370563126782
+          }
+        }
+      ]
+    }
+  },
+  {
+    "resultKey": {
+      "dataSetDate": 1788946993695,
+      "tags": {
+        "month": "2025-10",
+        "dataset": "nyc_yellow_taxi"
+      }
+    },
+    "analyzerContext": {
+      "metricMap": [
+        {
+          "analyzer": {
+            "analyzerName": "Completeness",
+            "column": "passenger_count"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "passenger_count",
+            "name": "Completeness",
+            "value": 0.7762577678004308
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "trip_distance"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "trip_distance",
+            "name": "Mean",
+            "value": 6.6967439196033824
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Maximum",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Maximum",
+            "value": 1071.9
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Minimum",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Minimum",
+            "value": -800.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Completeness",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Completeness",
+            "value": 1.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Size"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Dataset",
+            "instance": "*",
+            "name": "Size",
+            "value": 4428699.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "CountDistinct",
+            "columns": [
+              "PULocationID"
+            ]
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "PULocationID",
+            "name": "CountDistinct",
+            "value": 262.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "passenger_count"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "passenger_count",
+            "name": "Mean",
+            "value": 1.2748128751659487
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Mean",
+            "value": 18.255545755085404
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "StandardDeviation",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "StandardDeviation",
+            "value": 19.68845947191748
+          }
+        }
+      ]
+    }
+  },
+  {
+    "resultKey": {
+      "dataSetDate": 1788946995233,
+      "tags": {
+        "month": "2025-11",
+        "dataset": "nyc_yellow_taxi"
+      }
+    },
+    "analyzerContext": {
+      "metricMap": [
+        {
+          "analyzer": {
+            "analyzerName": "Completeness",
+            "column": "passenger_count"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "passenger_count",
+            "name": "Completeness",
+            "value": 0.7573230682988938
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "trip_distance"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "trip_distance",
+            "name": "Mean",
+            "value": 6.530913863727199
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Maximum",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Maximum",
+            "value": 1508.7
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Minimum",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Minimum",
+            "value": -1508.7
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Completeness",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Completeness",
+            "value": 1.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Size"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Dataset",
+            "instance": "*",
+            "name": "Size",
+            "value": 4181444.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "CountDistinct",
+            "columns": [
+              "PULocationID"
+            ]
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "PULocationID",
+            "name": "CountDistinct",
+            "value": 260.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "passenger_count"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "passenger_count",
+            "name": "Mean",
+            "value": 1.2871010362825197
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Mean",
+            "value": 17.1179270295109
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "StandardDeviation",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "StandardDeviation",
+            "value": 19.579276515982514
+          }
+        }
+      ]
+    }
+  },
+  {
+    "resultKey": {
+      "dataSetDate": 1788949946095,
+      "tags": {
+        "month": "2025-09",
+        "dataset": "nyc_yellow_taxi"
+      }
+    },
+    "analyzerContext": {
+      "metricMap": [
+        {
+          "analyzer": {
+            "analyzerName": "UniqueValueRatio",
+            "columns": [
+              "PULocationID"
+            ]
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "PULocationID",
+            "name": "UniqueValueRatio",
+            "value": 0.007722007722007722
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "ApproxQuantile",
+            "column": "trip_distance",
+            "quantile": 0.5,
+            "relativeError": 0.01
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "trip_distance",
+            "name": "ApproxQuantile-0.5",
+            "value": 1.94
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Distinctness",
+            "columns": [
+              "PULocationID"
+            ]
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "PULocationID",
+            "name": "Distinctness",
+            "value": 6.74759437839415E-5
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Correlation",
+            "firstColumn": "trip_distance",
+            "secondColumn": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Multicolumn",
+            "instance": "trip_distance,fare_amount",
+            "name": "Correlation",
+            "value": 7.67010077821472E-4
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Entropy",
+            "column": "payment_type"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "payment_type",
+            "name": "Entropy",
+            "value": 0.8867406847741004
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "ApproxQuantile",
+            "column": "fare_amount",
+            "quantile": 0.5,
+            "relativeError": 0.01
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "ApproxQuantile-0.5",
+            "value": 15.6
+          }
+        }
+      ]
+    }
+  },
+  {
+    "resultKey": {
+      "dataSetDate": 1788949953080,
+      "tags": {
+        "month": "2025-10",
+        "dataset": "nyc_yellow_taxi"
+      }
+    },
+    "analyzerContext": {
+      "metricMap": [
+        {
+          "analyzer": {
+            "analyzerName": "UniqueValueRatio",
+            "columns": [
+              "PULocationID"
+            ]
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "PULocationID",
+            "name": "UniqueValueRatio",
+            "value": 0.011494252873563218
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "ApproxQuantile",
+            "column": "trip_distance",
+            "quantile": 0.5,
+            "relativeError": 0.01
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "trip_distance",
+            "name": "ApproxQuantile-0.5",
+            "value": 1.9
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Distinctness",
+            "columns": [
+              "PULocationID"
+            ]
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "PULocationID",
+            "name": "Distinctness",
+            "value": 6.617695718350871E-5
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Correlation",
+            "firstColumn": "trip_distance",
+            "secondColumn": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Multicolumn",
+            "instance": "trip_distance,fare_amount",
+            "name": "Correlation",
+            "value": 0.007229160464387687
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Entropy",
+            "column": "payment_type"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "payment_type",
+            "name": "Entropy",
+            "value": 0.8330036251222721
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "ApproxQuantile",
+            "column": "fare_amount",
+            "quantile": 0.5,
+            "relativeError": 0.01
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "ApproxQuantile-0.5",
+            "value": 14.9
+          }
+        }
+      ]
+    }
+  },
+  {
+    "resultKey": {
+      "dataSetDate": 1788949960292,
+      "tags": {
+        "month": "2025-11",
+        "dataset": "nyc_yellow_taxi"
+      }
+    },
+    "analyzerContext": {
+      "metricMap": [
+        {
+          "analyzer": {
+            "analyzerName": "UniqueValueRatio",
+            "columns": [
+              "PULocationID"
+            ]
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "PULocationID",
+            "name": "UniqueValueRatio",
+            "value": 0.015444015444015444
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "ApproxQuantile",
+            "column": "trip_distance",
+            "quantile": 0.5,
+            "relativeError": 0.01
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "trip_distance",
+            "name": "ApproxQuantile-0.5",
+            "value": 1.89
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Distinctness",
+            "columns": [
+              "PULocationID"
+            ]
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "PULocationID",
+            "name": "Distinctness",
+            "value": 7.108141731406103E-5
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Correlation",
+            "firstColumn": "trip_distance",
+            "secondColumn": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Multicolumn",
+            "instance": "trip_distance,fare_amount",
+            "name": "Correlation",
+            "value": 0.005978612284964892
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Entropy",
+            "column": "payment_type"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "payment_type",
+            "name": "Entropy",
+            "value": 0.8219979665277234
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "ApproxQuantile",
+            "column": "fare_amount",
+            "quantile": 0.5,
+            "relativeError": 0.01
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "ApproxQuantile-0.5",
+            "value": 14.2
+          }
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,124 @@
+[
+  {
+    "resultKey": {
+      "dataSetDate": 1788949782403,
+      "tags": {
+        "month": "2025-09"
+      }
+    },
+    "analyzerContext": {
+      "metricMap": [
+        {
+          "analyzer": {
+            "analyzerName": "Size"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Dataset",
+            "instance": "*",
+            "name": "Size",
+            "value": 4251015.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Mean",
+            "value": 19.204001681949958
+          }
+        }
+      ]
+    }
+  },
+  {
+    "resultKey": {
+      "dataSetDate": 1788949783403,
+      "tags": {
+        "month": "2025-10"
+      }
+    },
+    "analyzerContext": {
+      "metricMap": [
+        {
+          "analyzer": {
+            "analyzerName": "Size"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Dataset",
+            "instance": "*",
+            "name": "Size",
+            "value": 4428699.0
+          }
+        },
+        {
+          "analyzer": {
+            "analyzerName": "Mean",
+            "column": "fare_amount"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Column",
+            "instance": "fare_amount",
+            "name": "Mean",
+            "value": 18.255545755085404
+          }
+        }
+      ]
+    }
+  },
+  {
+    "resultKey": {
+      "dataSetDate": 1788949792403,
+      "tags": {
+        "month": "2025-11"
+      }
+    },
+    "analyzerContext": {
+      "metricMap": [
+        {
+          "analyzer": {
+            "analyzerName": "Size"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Dataset",
+            "instance": "*",
+            "name": "Size",
+            "value": 4181444.0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "resultKey": {
+      "dataSetDate": 1788949793403,
+      "tags": {
+        "month": "2025-11-partial"
+      }
+    },
+    "analyzerContext": {
+      "metricMap": [
+        {
+          "analyzer": {
+            "analyzerName": "Size"
+          },
+          "metric": {
+            "metricName": "DoubleMetric",
+            "entity": "Dataset",
+            "instance": "*",
+            "name": "Size",
+            "value": 1464305.0
+          }
+        }
+      ]
+    }
+  }
+]

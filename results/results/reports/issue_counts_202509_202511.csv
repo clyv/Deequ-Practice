@@ -1,0 +1,7 @@
+issue,rows_affected,pct_of_data
+Negative fare_amount,969118,7.5352
+Zero or negative fare,975362,7.5838
+Negative tip_amount,296,0.0023
+Zero trip distance,359502,2.7953
+Invalid passenger count,3137285,24.3935
+Dropoff before pickup,187267,1.4561
