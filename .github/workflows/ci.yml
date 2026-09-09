@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"     # PySpark 3.5 supports 3.8-3.11
+          cache: pip
+
+      # No JVM here on purpose. src/reporting and src/checks import pyspark and
+      # pydeequ lazily, so the report/metrics logic and the value domains are
+      # testable without Spark and the job finishes in seconds.
+      - name: Install test dependencies
+        run: pip install -r requirements-test.txt
+
+      - name: Run pytest
+        run: pytest tests/ -v
+
+  notebook:
+    name: Notebook static check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # A notebook fails late: an undefined name only surfaces when the cell
+      # runs, which here means after a ten-minute Java and Spark install. This
+      # catches it in seconds, and would have caught the metrics-store defect
+      # that shipped in this repo's first version.
+      - name: Validate notebook name resolution
+        run: python scripts/validate_notebook.py notebooks/project1.ipynb
+
+      - name: Check the notebook still carries its outputs
+        run: |
+          python - <<'PY'
+          import json, sys
+          nb = json.load(open("notebooks/project1.ipynb", encoding="utf-8"))
+          stored = sum(len(c.get("outputs", [])) for c in nb["cells"])
+          print(f"{len(nb['cells'])} cells, {stored} stored outputs")
+          if stored == 0:
+              sys.exit("Notebook has no stored outputs -- commit it executed, "
+                       "so the repo shows real results.")
+          PY

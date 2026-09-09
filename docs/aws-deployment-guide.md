@@ -205,6 +205,105 @@ This triggers the Glue job automatically — no manual runs, no cron jobs.
 
 ---
 
+---
+
+## Managed path: AWS Glue Data Quality and DQDL
+
+AWS Glue Data Quality is **built on Deequ**, and exposes it through DQDL (Data
+Quality Definition Language) — a declarative rule syntax evaluated by a managed,
+serverless runner. That makes it the natural production destination for this
+pipeline, and it changes the trade-off: you give up the programmability of the
+PyDeequ API and get rule evaluation, Data Catalog integration, and scheduling
+without owning a Spark cluster.
+
+### When to use which
+
+| | PyDeequ (this repo) | Glue Data Quality (DQDL) |
+|---|---|---|
+| Rule definition | Python, arbitrary logic | Declarative DQDL |
+| Where it runs | Any Spark cluster | Managed, serverless |
+| Metrics history | You own the repository | Managed, with anomaly detection built in |
+| Custom logic | Anything Python can express | `CustomSql` escape hatch |
+| Row-level output | `rowLevelResultsAsDataFrame` | Rule outcomes + optional row-level flags |
+| Good for | Investigation, bespoke rules, portability | Catalog-registered tables, scheduled quality gates |
+
+The suite in this repo is portable across any Spark runtime. DQDL is not — but
+if the data already lives in the Glue Data Catalog, it is far less to operate.
+
+### The suite, translated
+
+Our `src/checks/` modules map to DQDL almost rule for rule:
+
+```
+Rules = [
+    # --- schema_checks.py ------------------------------------------------
+    ColumnValues "payment_type" in [1, 2, 3, 4, 5, 6],
+    ColumnValues "RatecodeID"   in [1, 2, 3, 4, 5, 6],
+    ColumnValues "PULocationID" between 1 and 265,
+    ColumnValues "DOLocationID" between 1 and 265,
+    ColumnValues "fare_amount"   <= 1000,
+    ColumnValues "trip_distance" <= 500,
+
+    # --- completeness_checks.py -----------------------------------------
+    IsComplete "tpep_pickup_datetime",
+    IsComplete "tpep_dropoff_datetime",
+    IsComplete "fare_amount",
+    Completeness "passenger_count"      >= 0.95,
+    Completeness "congestion_surcharge" >= 0.95,
+    Completeness "RatecodeID"           >= 0.95,
+
+    # --- business_rule_checks.py ----------------------------------------
+    RowCount > 1000000,
+    ColumnValues "fare_amount"   > 0,
+    ColumnValues "trip_distance" > 0,
+    ColumnValues "tip_amount"    >= 0,
+    ColumnCorrelation "trip_distance" "fare_amount" > 0.8,
+
+    # Cross-column comparisons need the CustomSql escape hatch.
+    CustomSql "SELECT COUNT(*) FROM primary WHERE tpep_dropoff_datetime <= tpep_pickup_datetime" = 0
+]
+```
+
+Two things worth noting in that translation:
+
+- **`ColumnValues ... in [...]` is the rule that matters.** It is the DQDL
+  equivalent of `isContainedIn`, and it is what turns the root-cause finding in
+  step 10 into a permanent guardrail: `payment_type = 0` fails the rule, so the
+  broken feed is caught on arrival rather than discovered by hand.
+- **`ColumnCorrelation` has no single-column equivalent.** It is the rule that
+  catches the contamination described in step 17, where 0.0028% of rows drag the
+  distance/fare correlation from 0.88 to 0.001 while passing every per-column
+  check.
+
+### Anomaly detection
+
+DQDL has its own `DetectAnomaly` rule type, backed by the managed metrics
+history rather than a repository you maintain:
+
+```
+Rules = [
+    DetectAnomaly "RowCount"
+]
+```
+
+That is the managed counterpart of step 13's `addAnomalyCheck`. The concept is
+identical — compare the current metric against its own history — but Glue keeps
+the history for you, so there is no `FileSystemMetricsRepository` to point at S3
+and no `ResultKey` tagging to get right.
+
+### Failure behaviour
+
+The default is to continue on failure and record the result, which is the
+quarantine posture rather than fail-fast — the same choice made in step 14.
+Publishing results to CloudWatch gives you the alerting hook without the SNS
+plumbing sketched earlier in this guide.
+
+> DQDL gains rule types regularly (file-level rules, distribution rules,
+> composite rules, `WHERE` filtering). Check the current AWS documentation
+> before relying on the exact list above.
+
+---
+
 ## Why This Matters at Scale
 
 On a single Colab node, this pipeline processes 12.9M rows in a few minutes.  

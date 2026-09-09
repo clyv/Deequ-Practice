@@ -1,0 +1,9 @@
+# Runtime. The versions are coupled -- see the compatibility matrix in README.md.
+#   PyDeequ accepts SPARK_VERSION=3.5 only; Spark 4.x is Scala 2.13 and cannot
+#   load the Scala 2.12 Deequ JAR. Spark 3.5 needs Java 8/11/17 and Python 3.8-3.11.
+pyspark==3.5.9
+pydeequ==1.6.0
+
+pandas>=2.0
+pyarrow>=14.0
+matplotlib>=3.7

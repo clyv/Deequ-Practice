@@ -225,13 +225,26 @@ NYC TLC Public Data (monthly .parquet files)
 ```
 Deequ-Practice/
 ├── notebooks/
-│   └── project1.ipynb          ← Full pipeline (setup → report)
+│   └── project1.ipynb            ← Full pipeline (setup → report), committed with outputs
+├── src/                          ← The deployable library a Glue job imports
+│   ├── checks/
+│   │   ├── schema_checks.py      ← TLC value domains and credible bounds
+│   │   ├── completeness_checks.py← Presence budgets, co-missing cluster
+│   │   └── business_rule_checks.py← Trip validity, revenue integrity, correlation
+│   └── reporting/
+│       ├── metrics_store.py      ← Repository helpers + metric normalisation
+│       └── report_generator.py   ← CSV / JSON / markdown emission
+├── tests/                        ← 29 unit tests, no JVM required
+├── scripts/
+│   └── validate_notebook.py      ← Static name-resolution check for the notebook
 ├── docs/
-│   └── aws-deployment-guide.md ← Production AWS architecture
+│   └── aws-deployment-guide.md   ← Production AWS architecture + DQDL translation
 ├── results/
-│   ├── metrics/                ← Persisted Deequ metrics (taxi_metrics.json)
-│   └── reports/                ← Exported quality reports (CSV + README snippet)
-├── .gitignore
+│   ├── metrics/                  ← Persisted Deequ metrics + drift chart
+│   ├── reports/                  ← Exported quality reports (CSV + JSON + snippet)
+│   └── quarantine/               ← Rows that failed row-level validation
+├── .github/workflows/ci.yml
+├── requirements.txt
 └── README.md
 ```
 
@@ -343,6 +356,40 @@ A full run writes:
 | `results/reports/column_profile_*.csv` | Per-column completeness, dtype, distinct count, min/max |
 | `results/reports/issue_counts_*.csv` | Row counts and percentages per quality issue |
 | `results/reports/README_results_snippet.md` | The Results tables above, pre-rendered for pasting |
+
+---
+
+## 🧪 Tests and CI
+
+The report and metrics logic is pure pandas, and PyDeequ is imported lazily, so
+the suite runs without a JVM and finishes in about a second:
+
+```bash
+pip install -r requirements-test.txt
+pytest tests/ -v
+```
+
+**29 tests**, and the interesting ones are regressions for bugs this pipeline
+actually hit:
+
+| Test | The bug it pins |
+|---|---|
+| `test_missing_tag_column_raises_rather_than_fabricating` | Deequ returns tags as columns, not a `tags` dict — a defensive fallback silently overwrote `month` with `None` |
+| `test_repeated_runs_collapse_to_the_latest` | `saveOrAppendResult` appends by design, so re-running left duplicate months and reindexing raised |
+| `test_payment_type_domain_excludes_the_broken_feeds_sentinel` | The spec defines 1–6; automated suggestion would happily allow the observed `0` |
+| `test_correlation_floor_sits_between_observed_raw_and_cleaned` | The 0.0012 → 0.8770 contamination gap |
+
+CI additionally runs a **static check on the notebook itself**:
+
+```bash
+python scripts/validate_notebook.py notebooks/project1.ipynb
+```
+
+It walks the cells in execution order and reports any name read before something
+binds it. Notebooks fail late — an undefined name only surfaces when the cell
+runs, which here means after a ten-minute Java and Spark install. Run against
+this repo's first committed version it reports 13 undefined reads and exits 1,
+which is exactly the defect that made the original pipeline unrunnable.
 
 ---
 

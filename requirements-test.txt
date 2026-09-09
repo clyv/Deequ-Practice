@@ -1,0 +1,5 @@
+# What the unit tests need. Deliberately excludes pyspark/pydeequ: the logic in
+# src/reporting and the value domains in src/checks import them lazily, so the
+# suite runs in seconds on CI without a JVM or a 400 MB Spark download.
+pandas>=2.0
+pytest>=8.0
