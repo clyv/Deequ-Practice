@@ -1,0 +1,13 @@
+check,check_level,check_status,constraint,constraint_status,constraint_message
+NYC Taxi Quality Checks,Warning,Warning,"CompletenessConstraint(Completeness(tpep_pickup_datetime,None,None))",Success,
+NYC Taxi Quality Checks,Warning,Warning,"CompletenessConstraint(Completeness(tpep_dropoff_datetime,None,None))",Success,
+NYC Taxi Quality Checks,Warning,Warning,"CompletenessConstraint(Completeness(fare_amount,None,None))",Success,
+NYC Taxi Quality Checks,Warning,Warning,"ComplianceConstraint(Compliance(fare_amount is non-negative,COALESCE(CAST(fare_amount AS DECIMAL(20,10)), 0.0) >= 0,None,List(fare_amount),None))",Failure,Value: 0.9246476872455809 does not meet the constraint requirement!
+NYC Taxi Quality Checks,Warning,Warning,"ComplianceConstraint(Compliance(tip_amount is non-negative,COALESCE(CAST(tip_amount AS DECIMAL(20,10)), 0.0) >= 0,None,List(tip_amount),None))",Failure,Value: 0.9999769849651174 does not meet the constraint requirement!
+NYC Taxi Quality Checks,Warning,Warning,"ComplianceConstraint(Compliance(trip_distance is non-negative,COALESCE(CAST(trip_distance AS DECIMAL(20,10)), 0.0) >= 0,None,List(trip_distance),None))",Success,
+NYC Taxi Quality Checks,Warning,Warning,"ComplianceConstraint(Compliance(Trip distance must be positive,trip_distance > 0,None,List(),None))",Failure,Value: 0.9720474626001796 does not meet the constraint requirement!
+NYC Taxi Quality Checks,Warning,Warning,"ComplianceConstraint(Compliance(Revenue integrity: fare must be positive,fare_amount > 0,None,List(),None))",Failure,Value: 0.924162194415153 does not meet the constraint requirement!
+NYC Taxi Quality Checks,Warning,Warning,"ComplianceConstraint(Compliance(Dropoff must be after pickup,tpep_dropoff_datetime > tpep_pickup_datetime,None,List(),None))",Failure,Value: 0.9854393360224639 does not meet the constraint requirement!
+NYC Taxi Quality Checks,Warning,Warning,"ComplianceConstraint(Compliance(Passenger count must be 1-6,passenger_count >= 1 AND passenger_count <= 6,None,List(),None))",Failure,Value: 0.7560651225962701 does not meet the constraint requirement!
+NYC Taxi Quality Checks,Warning,Warning,"ComplianceConstraint(Compliance(Pickup zone must be valid NYC zone,PULocationID >= 1 AND PULocationID <= 265,None,List(),None))",Success,
+NYC Taxi Quality Checks,Warning,Warning,"ComplianceConstraint(Compliance(Dropoff zone must be valid NYC zone,DOLocationID >= 1 AND DOLocationID <= 265,None,List(),None))",Success,
