@@ -23,3 +23,6 @@ Thumbs.db
 # Note: results/metrics/*.json and results/reports/*.csv are deliberately NOT
 # ignored — the exported metrics and quality reports are project evidence and
 # belong in the repo.
+
+# Hadoop writes checksum sidecars next to its output.
+*.crc
