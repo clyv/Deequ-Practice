@@ -1,5 +1,7 @@
 # 🚕 Data Quality at Scale: PyDeequ + NYC Yellow Taxi
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/clyv/Deequ-Practice/blob/main/notebooks/project1.ipynb)
+
 > Automated data quality validation pipeline built with **PyDeequ (AWS Deequ)** and **PySpark**.  
 > Validates millions of rows of real NYC taxi trip data across constraint checking, column profiling, and month-over-month anomaly detection.
 
@@ -23,28 +25,64 @@ This project builds a **systematic data quality layer** using PyDeequ — the sa
 | Metric | Value |
 |---|---|
 | Months analyzed | Sep 2025, Oct 2025, Nov 2025 |
-| Total rows validated | ~[FILL IN YOUR TOTAL ROW COUNT] |
+| Total rows validated | **12,861,158** |
 | Constraint checks run | 12 |
 | ✅ Checks passed | 6 |
 | 🚨 Checks failed | 6 |
 
+| Month | Rows |
+|---|---|
+| Sep 2025 | 4,251,015 |
+| Oct 2025 | 4,428,699 |
+| Nov 2025 | 4,181,444 |
+
 ### Real Data Quality Issues Found
+
+Every percentage below is the share of the 12,861,158-row combined dataset that
+violates the corresponding Deequ constraint.
 
 | Issue | Rows Affected | % of Data |
 |---|---|---|
-| Invalid passenger count (outside 1–6) | [FILL IN] | [FILL IN]% |
-| Zero or negative fare amount | [FILL IN] | [FILL IN]% |
-| Negative fare amount | [FILL IN] | [FILL IN]% |
-| Zero trip distance | [FILL IN] | [FILL IN]% |
-| Dropoff recorded before pickup | [FILL IN] | [FILL IN]% |
-| Negative tip amount | [FILL IN] | [FILL IN]% |
+| Invalid passenger count (outside 1–6, incl. NULL) | 3,137,285 | 24.39% |
+| Zero or negative fare amount | 975,362 | 7.58% |
+| Negative fare amount | 969,118 | 7.54% |
+| Zero trip distance | 359,502 | 2.80% |
+| Dropoff recorded before pickup | 187,267 | 1.46% |
+| Negative tip amount | 296 | 0.002% |
+
+**The headline finding — `passenger_count`.** Nearly a quarter of all trips fail
+the `1 ≤ passenger_count ≤ 6` constraint, but almost none of them are
+out-of-range values:
+
+| Cause | Rows | % of Data |
+|---|---|---|
+| `passenger_count` is NULL | 3,072,822 | 23.89% |
+| `passenger_count` outside 1–6 | 64,463 | 0.50% |
+
+So this is not a validation problem at the edges — it is an upstream collection
+failure that stopped populating the field for roughly 1 in 4 trips. A row-count
+filter that ignores NULLs would report this as a 0.50% issue and miss it
+entirely; Deequ's `satisfies()` treats a NULL predicate as a violation and
+surfaces the real 24.39%.
 
 ### Drift Detected Across 3 Months
-- Mean fare amount: $[FILL IN] → $[FILL IN] ([FILL IN]% change)
-- Mean trip distance: [FILL IN] → [FILL IN] miles ([FILL IN]% change)
-- Passenger count completeness: [FILL IN] → [FILL IN]
 
-> **Note:** 2025 data includes the new `cbd_congestion_fee` column introduced by NYC's congestion pricing policy — a real schema change automatically surfaced by the column profiler.
+| Metric | Sep 2025 | Nov 2025 | Change |
+|---|---|---|---|
+| Mean fare amount | $19.20 | $17.12 | -10.86% |
+| Mean trip distance | 6.84 mi | 6.53 mi | -4.51% |
+| `passenger_count` completeness | 0.7490 | 0.7573 | +0.0084 |
+
+Mean fare falling 10.9% across three consecutive months, while trip
+distance falls only 4.5%, is exactly the kind of divergence a metrics
+store is built to catch — fare per mile moved, and nothing in a row-count check
+would have shown it.
+
+> **Note on schema:** the 2025 files carry a `cbd_congestion_fee` column (20
+> columns) that the 2024 files do not (19 columns) — NYC's congestion pricing
+> policy landing in the data. It is present in all three months analysed here,
+> so it shows up as a year-over-year schema difference in the column profiler
+> rather than as drift within this window.
 
 ---
 
@@ -75,39 +113,70 @@ NYC TLC Public Data (monthly .parquet files)
 ## 📁 Repository Structure
 
 ```
-deequ-nyc-taxi-quality/
+Deequ-Practice/
 ├── notebooks/
 │   └── project1.ipynb          ← Full pipeline (setup → report)
 ├── docs/
 │   └── aws-deployment-guide.md ← Production AWS architecture
 ├── results/
-│   ├── metrics/                ← Persisted Deequ metrics (JSON)
-│   └── reports/                ← Exported quality reports (CSV)
+│   ├── metrics/                ← Persisted Deequ metrics (taxi_metrics.json)
+│   └── reports/                ← Exported quality reports (CSV + README snippet)
+├── .gitignore
 └── README.md
 ```
+
+> Source `.parquet` files are **not** committed — they are 50–60 MB each and the
+> notebook downloads them on demand from the public TLC endpoint.
 
 ---
 
 ## 🚀 How to Run
 
 ### Option 1 — Google Colab (recommended)
-1. Open `notebooks/project1.ipynb` in [Google Colab](https://colab.research.google.com)
-2. Run all cells from top to bottom
-3. Data downloads automatically from the NYC TLC public endpoint
+
+1. Click the **Open in Colab** badge at the top of this README (or open `notebooks/project1.ipynb` in [Google Colab](https://colab.research.google.com))
+2. Runtime → Run all
+3. Java 8, PySpark and the pinned Deequ JAR install in the first two cells; the
+   data downloads automatically from the NYC TLC public endpoint
+
+The first two cells install Java and Spark, so the first run takes a few minutes.
 
 ### Option 2 — Local Spark
-```bash
-# Prerequisites: Java 8+, Python 3.9+
-pip install pyspark==3.3.0 pydeequ
 
-# Download data
-wget https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2025-09.parquet
-wget https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2025-10.parquet
-wget https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2025-11.parquet
+PyDeequ binds to the Deequ JVM library, so **Java 8 is required** — Deequ
+`2.0.4-spark-3.5` is built for Scala 2.12 and will not load on newer runtimes.
+
+```bash
+# Prerequisites: Java 8, Python 3.9+
+pip install "pyspark[connect]==4.0.0" pydeequ
+export SPARK_VERSION=3.5   # tells PyDeequ which Deequ build to bind to
+
+# Download data into the repo root
+wget https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2025-09.parquet -O sep_2025.parquet
+wget https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2025-10.parquet -O oct_2025.parquet
+wget https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2025-11.parquet -O nov_2025.parquet
 
 # Run the notebook
 jupyter notebook notebooks/project1.ipynb
 ```
+
+The notebook resolves its own project root, so it runs correctly whether the
+working directory is the repo root (Colab) or `notebooks/` (local Jupyter). If
+the 2025 files are absent it falls back to any `yellow_tripdata_2024-0{1,2,3}.parquet`
+present in the repo root.
+
+### Outputs
+
+A full run writes:
+
+| Path | Contents |
+|---|---|
+| `results/metrics/taxi_metrics.json` | Deequ metrics store — one tagged entry per month, appended each run |
+| `results/metrics/anomaly_trends.png` | 2×2 drift chart (fare, distance, volume, completeness) |
+| `results/reports/constraint_results_*.csv` | Every constraint with pass/fail and compliance ratio |
+| `results/reports/column_profile_*.csv` | Per-column completeness, dtype, distinct count, min/max |
+| `results/reports/issue_counts_*.csv` | Row counts and percentages per quality issue |
+| `results/reports/README_results_snippet.md` | The Results tables above, pre-rendered for pasting |
 
 ---
 
@@ -116,8 +185,8 @@ jupyter notebook notebooks/project1.ipynb
 | Tool | Purpose |
 |---|---|
 | [PyDeequ](https://github.com/awslabs/python-deequ) | Data quality checks, profiling, metrics store |
-| PySpark 3.5 | Distributed DataFrame processing |
-| Amazon Deequ (JVM) | Underlying Scala engine behind PyDeequ |
+| PySpark 4.0.0 | Distributed DataFrame processing |
+| Amazon Deequ 2.0.4-spark-3.5 (JVM) | Underlying Scala engine (needs Java 8 / Scala 2.12) |
 | Matplotlib | Drift visualization charts |
 | NYC TLC Open Data | Source dataset (~3–4M rows/month) |
 
@@ -145,3 +214,6 @@ See the full deployment guide → [`docs/aws-deployment-guide.md`](docs/aws-depl
 
 NYC Taxi & Limousine Commission — [TLC Trip Record Data](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page)  
 Yellow Taxi Trip Records, September–November 2025 (Parquet format)
+
+TLC publishes monthly with roughly a two-month lag. If a download returns a
+0-byte file that month is not published yet — step the URLs back one month.

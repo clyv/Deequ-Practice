@@ -1,0 +1,25 @@
+# ── NYC TLC source data ──────────────────────────────────────────────────────
+# 50–60 MB per month. The notebook downloads these on demand from the public
+# TLC endpoint, so they should not live in the repo.
+*.parquet
+zone_lookup.csv
+
+# ── Python / Jupyter ─────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# ── Spark / Deequ scratch ────────────────────────────────────────────────────
+spark-warehouse/
+metastore_db/
+derby.log
+
+# ── OS ───────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# Note: results/metrics/*.json and results/reports/*.csv are deliberately NOT
+# ignored — the exported metrics and quality reports are project evidence and
+# belong in the repo.
