@@ -136,10 +136,16 @@ Deequ-Practice/
 
 1. Click the **Open in Colab** badge at the top of this README (or open `notebooks/project1.ipynb` in [Google Colab](https://colab.research.google.com))
 2. Runtime → Run all
-3. Java 8, PySpark and the pinned Deequ JAR install in the first two cells; the
-   data downloads automatically from the NYC TLC public endpoint
+3. **Setup 1 restarts the runtime once, on purpose** — this interrupts "Run all"
+4. Runtime → Run all again. Setup 1 detects its sentinel file and skips straight through
 
-The first two cells install Java and Spark, so the first run takes a few minutes.
+The restart is required: Colab ships a PySpark 4.x that has to be removed
+before 3.5 will import, and the old modules stay in `sys.modules` until the
+kernel restarts. Setup 2 then prints the resolved Java/Python/Spark versions and
+names any mismatch before the JVM is started.
+
+Expect a few minutes on the first pass while Java, Spark and the Deequ JAR
+download.
 
 ### Environment compatibility (read this first)
 
@@ -160,17 +166,29 @@ Java 17+, so the JVM exits before Py4J can read its port. Raising Java alone
 does not fix it either — Spark 4 is Scala 2.13, so the Deequ JAR still will not
 load. Pin Spark to 3.5.
 
-> **Colab note:** Colab's runtime is currently Python 3.13, which is ahead of
-> what PySpark 3.5 declares. This pipeline does all of its work in the JVM — no
-> Python UDFs — so it generally runs anyway, and the preflight cell reports the
-> mismatch explicitly instead of failing obscurely. If you do hit a Python
-> serialization error, use an environment with Python 3.11.
+**Two Colab-specific hazards**, both handled in the setup cells:
+
+- **Colab's default `java` is 21.** Spark 3.5 supports 8/11/17 only, and
+  `apt install openjdk-11` does *not* repoint `/usr/bin/java` — so following the
+  symlink silently selects an unsupported JDK. Setup 2 picks the JDK directory
+  directly instead.
+- **Colab ships a PySpark 4.x.** Downgrading over it leaves a mixed tree, where
+  3.5's `pyspark/pandas/internal.py` imports `get_column_class` from a 4.0
+  `pyspark/sql/utils.py` that no longer defines it. Setup 1 deletes the package
+  directory and restarts the runtime; Setup 2 detects the condition explicitly
+  if it recurs.
+
+> **Python version:** Colab currently runs Python 3.13, ahead of what PySpark
+> 3.5 declares (3.8–3.11). This pipeline does all of its work in the JVM — no
+> Python UDFs — so it generally runs anyway, and the preflight reports the
+> mismatch rather than failing obscurely. If you hit a Python serialization
+> error, that is the cause; use an environment with Python 3.11.
 
 ### Option 2 — Local Spark
 
 ```bash
 # Prerequisites: Java 11 (8 or 17 also work), Python 3.8–3.11
-pip install "pyspark==3.5.9" pydeequ
+pip install "pyspark==3.5.9" "pydeequ==1.6.0"
 export SPARK_VERSION=3.5   # PyDeequ reads this to pick its Deequ JAR
 
 # Download data into the repo root
