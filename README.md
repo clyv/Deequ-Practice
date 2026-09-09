@@ -166,6 +166,22 @@ Java 17+, so the JVM exits before Py4J can read its port. Raising Java alone
 does not fix it either — Spark 4 is Scala 2.13, so the Deequ JAR still will not
 load. Pin Spark to 3.5.
 
+### Runtime requirements
+
+**Use the standard CPU runtime — not a GPU one.** Spark and Deequ are CPU/JVM
+work; there is no GPU path in this stack without the RAPIDS plugin, so a T4
+gives you the same ~12.7 GB of system RAM plus idle VRAM and a spent quota.
+
+What matters is heap. In `local[*]` mode the driver JVM is also the executor, so
+`spark.driver.memory` is the whole budget for ~13M rows — and the default is
+1 GB, which shows up as a dead kernel rather than a Spark error. Setup 3 raises
+it to 6 GB via `PYSPARK_SUBMIT_ARGS` (setting it on `SparkSession.builder` does
+nothing in local mode, because the JVM has already launched by then) and prints
+the heap it actually got.
+
+If the runtime still dies, drop to two months in the loader cell before reaching
+for a bigger machine.
+
 **Two Colab-specific hazards**, both handled in the setup cells:
 
 - **Colab's default `java` is 21.** Spark 3.5 supports 8/11/17 only, and
